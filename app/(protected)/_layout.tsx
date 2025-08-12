@@ -6,7 +6,7 @@ export default function ProtectedLayout() {
     return <Redirect href='/sign-in'/>
   }
   return (
-    <Stack screenOptions={{headerShown: false}}>
+    <Stack screenOptions={{headerShown: false, fullScreenGestureEnabled: true}}>
       <Stack.Screen name="(tabs)"/>
     </Stack>
   )
