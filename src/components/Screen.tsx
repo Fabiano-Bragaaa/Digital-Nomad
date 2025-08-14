@@ -3,7 +3,7 @@ import { Box, BoxProps } from "./Box";
 
 export function Screen({children, ...boxProps}:PropsWithChildren & BoxProps) {
   return (
-    <Box bg="background" paddingHorizontal="s16" {...boxProps}>
+    <Box bg="background" paddingHorizontal="padding" {...boxProps}>
       {children}
     </Box>
   )
