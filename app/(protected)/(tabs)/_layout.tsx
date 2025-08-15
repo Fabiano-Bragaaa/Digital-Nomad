@@ -17,7 +17,7 @@ export default function TabLayout() {
           backgroundColor: colors.background,
           paddingTop: 10,
           height: 90,
-          borderTopWidth: 0,
+          borderTopWidth:0,
         }, 
         tabBarLabelStyle:{
           fontFamily: 'PoppinsRegular',
