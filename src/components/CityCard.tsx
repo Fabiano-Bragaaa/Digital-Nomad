@@ -10,20 +10,27 @@ type CityCardProps = {
 };
 
 export function CityCard({ cityPreview }: CityCardProps) {
-  const {borderRadii} = useAppTheme()
+  const { borderRadii } = useAppTheme();
   return (
     <ImageBackground
       style={{ width: "100%", height: 280 }}
       source={cityPreview.coverImage}
-      imageStyle={{borderRadius: borderRadii.default}}>
-        <Box flex={1} padding="s24" justifyContent="space-between">
-          <Box alignSelf="flex-end">
-            <Icon name="Favorite-outline" />
-          </Box>
-          <Box>
-      <Text variant="title22">{cityPreview.name}</Text>
-      <Text variant="text16">{cityPreview.country}</Text>
-      </Box>
+      imageStyle={{ borderRadius: borderRadii.default }}>
+      <Box
+        width={"100%"}
+        height={"100%"}
+        backgroundColor="midnightBlack"
+        opacity={0.25}
+        position="absolute"
+      />
+      <Box flex={1} padding="s24" justifyContent="space-between">
+        <Box alignSelf="flex-end">
+          <Icon name="Favorite-outline" />
+        </Box>
+        <Box>
+          <Text variant="title22">{cityPreview.name}</Text>
+          <Text variant="text16">{cityPreview.country}</Text>
+        </Box>
       </Box>
     </ImageBackground>
   );
