@@ -3,6 +3,7 @@ import { Screen } from "@/src/components/Screen";
 import { cityPreviewList } from "@/src/data/cities";
 import { FlatList, ListRenderItemInfo } from "react-native";
 
+import { CityFilter } from "@/src/containers/CityFilter";
 import { useAppTheme } from "@/src/theme/useAppTheme";
 import { CityPreview } from "@/src/types";
 import { useScrollToTop } from "@react-navigation/native";
@@ -27,6 +28,7 @@ export default function HomeScreen() {
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
+        ListHeaderComponent={<CityFilter/>}
         contentContainerStyle={{gap: spacing.padding, paddingTop: top, paddingBottom: spacing.padding}}
       />
     </Screen>
