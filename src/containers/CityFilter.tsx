@@ -16,13 +16,15 @@ export function CityFilter({ categories }: CityFilterProps) {
   );
   return (
     <Box>
+      <Box paddingHorizontal="padding">
       <SearchInput
         value={name}
         onChangeText={setName}
         placeholder="Qual o seu proximo destino?"
       />
+      </Box>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      <Box mt="s16" gap="s8" flexDirection="row">
+      <Box mt="s16" gap="s8" flexDirection="row" paddingHorizontal="padding">
         {categories.map(category => (
           <CategoryPill
             key={category.id}
