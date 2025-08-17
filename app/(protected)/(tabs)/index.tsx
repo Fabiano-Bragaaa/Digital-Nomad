@@ -19,7 +19,7 @@ export default function HomeScreen() {
     null
   );
   const debouncedCityName = useDebounce(cityName)
-  const { cityPreviewList } = useCities(debouncedCityName, selectedCategoryId);
+  const { cityPreviewList } = useCities({name: cityName, categoryId: selectedCategoryId});
 
   const { spacing } = useAppTheme();
   const { top } = useSafeAreaInsets();
