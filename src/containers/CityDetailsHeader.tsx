@@ -1,10 +1,35 @@
+import { router } from "expo-router";
+import { ImageBackground } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Box } from "../components/Box";
-import { Text } from "../components/Text";
+import { Icon } from "../components/Icon";
+import { IconButton } from "../components/IconButton";
+import { City } from "../types";
 
-export function CityDetailsHeader() {
+type CityDetailsHeaderProps = Pick<City, "id" | "categories" | "coverImage">;
+
+export function CityDetailsHeader({
+  coverImage,
+  categories,
+  id,
+}: CityDetailsHeaderProps) {
+  const { top } = useSafeAreaInsets();
   return (
-    <Box padding="padding">
-      <Text>CityDetailsHeader</Text>
+    <Box>
+      <ImageBackground
+        source={coverImage}
+        style={{ width: "100%", height: 250 }}
+        imageStyle={{ borderBottomRightRadius: 40 }}>
+        <Box
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          paddingHorizontal="padding"
+          style={{ paddingTop: top }}>
+          <IconButton iconName="Chevron-left" onPress={router.back} />
+          <Icon name="Favorite-outline" size={30} color="pureWhite" />
+        </Box>
+      </ImageBackground>
     </Box>
   );
 }
