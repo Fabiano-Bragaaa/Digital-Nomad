@@ -1,12 +1,21 @@
+import { Screen } from "@/src/components/Screen";
+import { CityDetailsHeader } from "@/src/containers/CityDetailsHeader";
+import { CityDetailsInfo } from "@/src/containers/CityDetailsInfo";
+import { CityDetailsMap } from "@/src/containers/CityDetailsMap";
+import { CityDetailsRelatedCities } from "@/src/containers/CityDetailsRelatedCities";
+import { CityDetailsTouristAttraction } from "@/src/containers/CityDetailsTouristAttraction";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Text, View } from "react-native";
 
 export default function CityDetails() {
   const router = useRouter()
-  const {id, name} = useLocalSearchParams()
+  const {id} = useLocalSearchParams()
   return (
-    <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-      <Text onPress={router.back}>cityDetails {id} {name}</Text>
-    </View>
+    <Screen>
+      <CityDetailsHeader />
+      <CityDetailsInfo />
+      <CityDetailsTouristAttraction />
+      <CityDetailsMap />
+      <CityDetailsRelatedCities />
+    </Screen>
   )
 }
