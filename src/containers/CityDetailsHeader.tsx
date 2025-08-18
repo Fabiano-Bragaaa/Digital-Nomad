@@ -1,7 +1,8 @@
 import { router } from "expo-router";
-import { ImageBackground } from "react-native";
+import { ImageBackground, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Box } from "../components/Box";
+import { CategoryPill } from "../components/CategoryPill";
 import { Icon } from "../components/Icon";
 import { IconButton } from "../components/IconButton";
 import { City } from "../types";
@@ -30,6 +31,13 @@ export function CityDetailsHeader({
           <Icon name="Favorite-outline" size={30} color="pureWhite" />
         </Box>
       </ImageBackground>
+      <ScrollView horizontal bounces={false} style={{marginTop: -15}}>
+        <Box flexDirection="row" gap="s8" paddingHorizontal="padding">
+          {categories.map(category => (
+            <CategoryPill key={category.id} category={category} active={true} />
+          ))}
+        </Box>
+      </ScrollView>
     </Box>
   );
 }
