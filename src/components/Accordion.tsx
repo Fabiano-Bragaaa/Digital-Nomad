@@ -4,9 +4,8 @@ import Animated, {
   interpolateColor,
   SharedValue,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
-  withTiming,
+  withTiming
 } from "react-native-reanimated";
 import theme from "../theme/theme";
 import { useAppTheme } from "../theme/useAppTheme";
@@ -30,7 +29,7 @@ export function Accordion({ title, description }: AccordionProps) {
     <Pressable onPress={handleOpenPress}>
       <View>
         <AccordionHeader title={title} progress={progress} />
-        <AccordionBody description={description} isOpen={isOpen} />
+        <AccordionBody description={description} progress={progress}/>
       </View>
     </Pressable>
   );
@@ -43,9 +42,13 @@ function AccordionHeader({
   title: string;
   progress: SharedValue<number>;
 }) {
-  const {colors} = useAppTheme()
+  const { colors, borderRadii } = useAppTheme();
   const iconAnimatedStyle = useAnimatedStyle(() => ({
-    tintColor: interpolateColor(progress.value, [0, 1], [colors.gray2, colors.primary]),
+    tintColor: interpolateColor(
+      progress.value,
+      [0, 1],
+      [colors.gray2, colors.primary]
+    ),
     transform: [
       {
         rotate: interpolate(progress.value, [0, 1], [0, -180]) + "deg",
@@ -53,33 +56,46 @@ function AccordionHeader({
     ],
   }));
 
+const animatedStyle = useAnimatedStyle(() => ({
+  backgroundColor: interpolateColor(progress.value, [0, 1], [colors.transparent, colors.gray1]),
+  borderBottomLeftRadius: interpolate(progress.value, [0, 1], [borderRadii.default, 0]),
+  borderBottomRightRadius: interpolate(progress.value, [0, 1], [borderRadii.default, 0]),
+}));
+
   return (
-    <View style={styles.header}>
+    <Animated.View style={[styles.header, animatedStyle]}>
       <Box flexShrink={1}>
         <Text variant="title16">{title}</Text>
       </Box>
-        <Animated.Image
-          source={require("@/assets/images/chevron-down.png")}
-          style={[iconAnimatedStyle, { width: 24, height: 24 }]}
-        />
-    </View>
+      <Animated.Image
+        source={require("@/assets/images/chevron-down.png")}
+        style={[iconAnimatedStyle, { width: 24, height: 24 }]}
+      />
+    </Animated.View>
   );
 }
 
 function AccordionBody({
   description,
-  isOpen,
+  progress,
 }: {
   description: string;
-  isOpen: SharedValue<boolean>;
+  progress: SharedValue<number>;
 }) {
-  const height = useSharedValue(0);
-  const derivedHeight = useDerivedValue(() =>
-    withTiming(height.value * Number(isOpen.value), { duration: 500 })
-  );
 
+  const {  borderRadii } = useAppTheme();
+
+
+  const height = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(progress.value, [0, 1], [0, 1]),
+    borderBottomLeftRadius: interpolate(progress.value, [0, 1], [borderRadii.default, 0]),
+    borderBottomRightRadius: interpolate(progress.value, [0, 1], [borderRadii.default, 0]),
+    height: interpolate(progress.value, [0, 1], [0, height.value]),
+  }));
   return (
-    <Animated.View style={{ overflow: "hidden", height: derivedHeight }}>
+    <Animated.View style={[{ overflow: "hidden"},animatedStyle ]}>
       <View
         style={styles.body}
         onLayout={e => {
