@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import { supabaseService } from "../supabase/supabaseService";
+import { CityFilters, supabaseService } from "../supabase/supabaseService";
 import { CityPreview } from "../types";
 
-type CityFilterProps = {
-  name?: string;
-  categoryId?: string | null;
-};
 
 type UseCitiesReturn = {
   cities?: CityPreview[]
@@ -13,14 +9,14 @@ type UseCitiesReturn = {
   error?:  unknown
 }
 
-export function useCities({ categoryId, name }: CityFilterProps): UseCitiesReturn  {
+export function useCities(filters : CityFilters): UseCitiesReturn  {
   const [cities, setCities] = useState<CityPreview[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<unknown>(null)
 
   async function fetchData() {
     try{
-      const data = await supabaseService.findAll()
+      const data = await supabaseService.findAll(filters)
       setCities(data)
     } catch (error) {
       setError(error)
@@ -31,7 +27,7 @@ export function useCities({ categoryId, name }: CityFilterProps): UseCitiesRetur
 
   useEffect(() =>{
     fetchData()
-  }, [])
+  }, [filters.name, filters.categoryId])
 
   return {
     isLoading,
