@@ -4,7 +4,7 @@ import { ListRenderItemInfo } from "react-native";
 
 import { Box } from "@/src/components/Box";
 import { CityFilter } from "@/src/containers/CityFilter";
-import { categories } from "@/src/data/categories";
+import { useCategories } from "@/src/data/useCategories";
 import { useCities } from "@/src/data/useCities";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { useAppTheme } from "@/src/theme/useAppTheme";
@@ -21,6 +21,7 @@ export default function HomeScreen() {
   );
   const debouncedCityName = useDebounce(cityName)
   const { cities } = useCities({name: cityName, categoryId: selectedCategoryId});
+  const { categories } = useCategories();
 
   const { spacing } = useAppTheme();
   const { top } = useSafeAreaInsets();

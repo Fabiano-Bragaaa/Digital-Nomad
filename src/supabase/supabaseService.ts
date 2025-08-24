@@ -1,34 +1,64 @@
-import { CityPreview } from "../types";
+import { Category, CategoryCode, CityPreview } from "../types";
 import { supabase } from "./supabase";
 
-const storageURL = process.env.EXPO_PUBLIC_SUPABASE_STORAGE_URL
+const storageURL = process.env.EXPO_PUBLIC_SUPABASE_STORAGE_URL;
 
 export type CityFilters = {
   name?: string;
   categoryId?: string | null;
 };
 
-
 async function findAll(filters: CityFilters): Promise<CityPreview[]> {
-  try{
-    const {data} = await supabase.from('cities').select('*').ilike('name',`%${filters.name}%`)
+  try {
+    const fields = "id, name, country, cover_image"
+    let cities
+    if (filters.categoryId) {
+      const { data } = await supabase
+      .from("cities_with_categories")
+      .select(fields)
+      .eq("category_id", filters.categoryId)
+      .ilike("name", `%${filters.name}%`);
 
-    if(!data) {
-      throw new Error('No data found')
+      cities = data
+
+    }else{
+      const { data } = await supabase
+      .from("cities")
+      .select(fields)
+      .ilike("name", `%${filters.name}%`);
+
+      cities = data
     }
 
-    return data?.map(item => ({
-      id: item.id,
-      country: item.country,
-      name: item.name,
-      coverImage: `${storageURL}/${item.cover_image}`,
+    if (!cities) {
+      throw new Error("No data found");
+    }
 
-    }))
+    return cities.map(city => ({
+      id: city.id,
+      country: city.country,
+      name: city.name,
+      coverImage: `${storageURL}/${city.cover_image}`,
+    } as CityPreview))
   } catch (error) {
-    throw error
+    throw error;
+  }
 }
+
+async function listCategories():Promise<Category[]> {
+  const {data, error} = await supabase.from('categories').select('*')
+  if(error) {
+    throw new Error('Error listing categories')
+  }
+  return data.map(category => ({
+    code:category.code as CategoryCode,
+    description:category.description,
+    id:category.id,
+    name:category.name,
+  }))
 }
 
 export const supabaseService = {
-  findAll
-}
+  findAll,
+  listCategories,
+};
