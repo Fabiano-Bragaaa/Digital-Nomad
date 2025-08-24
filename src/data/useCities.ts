@@ -1,29 +1,43 @@
+import { useEffect, useState } from "react";
 import { supabaseService } from "../supabase/supabaseService";
 import { CityPreview } from "../types";
-import { cities } from "./cities";
 
 type CityFilterProps = {
   name?: string;
   categoryId?: string | null;
 };
 
-export function useCities({ categoryId, name }: CityFilterProps): {
-  cityPreviewList: CityPreview[];
-} {
-  supabaseService.findAll()
-  let cityPreviewList = [...cities];
-
-  if (name) {
-    cityPreviewList = cityPreviewList.filter(city => {
-      return city.name.toLowerCase().includes(name.toLowerCase())
-    })
-  }
-
-  if(categoryId) {
-    cityPreviewList = cityPreviewList.filter(city => {
-      return city.categories.some(category => category.id === categoryId)
-    })
-  }
-
-  return { cityPreviewList };
+type UseCitiesReturn = {
+  cities?: CityPreview[]
+  isLoading: boolean
+  error?:  unknown
 }
+
+export function useCities({ categoryId, name }: CityFilterProps): UseCitiesReturn  {
+  const [cities, setCities] = useState<CityPreview[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<unknown>(null)
+
+  async function fetchData() {
+    try{
+      const data = await supabaseService.findAll()
+      setCities(data)
+    } catch (error) {
+      setError(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() =>{
+    fetchData()
+  }, [])
+
+  return {
+    isLoading,
+    cities,
+    error
+  }
+
+}
+

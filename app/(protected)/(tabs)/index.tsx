@@ -20,7 +20,7 @@ export default function HomeScreen() {
     null
   );
   const debouncedCityName = useDebounce(cityName)
-  const { cityPreviewList } = useCities({name: cityName, categoryId: selectedCategoryId});
+  const { cities } = useCities({name: cityName, categoryId: selectedCategoryId});
 
   const { spacing } = useAppTheme();
   const { top } = useSafeAreaInsets();
@@ -38,7 +38,7 @@ export default function HomeScreen() {
     <Screen style={{ paddingHorizontal: 0 }}>
       <Animated.FlatList
       itemLayoutAnimation={FadingTransition.duration(500)}
-        data={cityPreviewList}
+        data={cities}
         ref={flatListRef}
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
