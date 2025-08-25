@@ -5,16 +5,15 @@ import { CityCard } from "../components/CityCard";
 import { Text } from "../components/Text";
 import { useRelatedCities } from "../data/useRelatedCities";
 import { useAppTheme } from "../theme/useAppTheme";
-import { City } from "../types";
 
 type CityDetailsRelatedCitiesProps = {
-  relatedCities: City["relatedCitiesIds"];
+  id: string;
 };
 
 export function CityDetailsRelatedCities({
-  relatedCities,
+  id,
 }: CityDetailsRelatedCitiesProps) {
-  const cities = useRelatedCities(relatedCities);
+  const cities = useRelatedCities(id);
   const { spacing } = useAppTheme();
   const {bottom} = useSafeAreaInsets()
   const {width, height} = useWindowDimensions()
@@ -32,7 +31,7 @@ export function CityDetailsRelatedCities({
         }}>
         {cities.map(city => (
           <CityCard
-            key={city.id}
+            key={city}
             cityPreview={city}
             style={{ width: width * 0.6, height: height * 0.3 }}
           />
