@@ -20,8 +20,8 @@ export default function HomeScreen() {
     null
   );
   const debouncedCityName = useDebounce(cityName)
-  const { cities } = useCities({name: debouncedCityName, categoryId: selectedCategoryId});
-  const { categories } = useCategories();
+  const { data:cities } = useCities({name: debouncedCityName, categoryId: selectedCategoryId});
+  const { data: categories } = useCategories();
 
   const { spacing } = useAppTheme();
   const { top } = useSafeAreaInsets();
