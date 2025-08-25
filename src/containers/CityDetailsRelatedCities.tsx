@@ -13,7 +13,7 @@ type CityDetailsRelatedCitiesProps = {
 export function CityDetailsRelatedCities({
   id,
 }: CityDetailsRelatedCitiesProps) {
-  const cities = useRelatedCities(id);
+const {data: cities} = useRelatedCities(id);
   const { spacing } = useAppTheme();
   const {bottom} = useSafeAreaInsets()
   const {width, height} = useWindowDimensions()
@@ -29,9 +29,9 @@ export function CityDetailsRelatedCities({
           gap: spacing.padding,
           paddingHorizontal: spacing.padding,
         }}>
-        {cities.map(city => (
+        {cities?.map(city => (
           <CityCard
-            key={city}
+            key={city.id}
             cityPreview={city}
             style={{ width: width * 0.6, height: height * 0.3 }}
           />
