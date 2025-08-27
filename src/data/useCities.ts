@@ -1,6 +1,9 @@
-import { CityFilters, supabaseService } from "../supabase/supabaseService";
+import { CityFilters, supabaseCityRepo } from "../supabase/supabaseService";
 import { useFetchData } from "./useFetchData";
 
 export function useCities(filters: CityFilters) {
-  return useFetchData(() => supabaseService.findAll(filters), [filters.name, filters.categoryId]);
+  return useFetchData(
+    () => supabaseCityRepo.findAll(filters),
+    [filters.name, filters.categoryId]
+  );
 }

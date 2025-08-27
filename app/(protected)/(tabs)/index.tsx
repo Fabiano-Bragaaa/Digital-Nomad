@@ -5,8 +5,9 @@ import { ListRenderItemInfo } from "react-native";
 import { Box } from "@/src/components/Box";
 import { CityFilter } from "@/src/containers/CityFilter";
 import { useCategories } from "@/src/data/useCategories";
-import { useCities } from "@/src/data/useCities";
+import { useCityFindAll } from "@/src/domain/city/operations/useCityFindAll";
 import { useDebounce } from "@/src/hooks/useDebounce";
+import { supabaseCityRepo } from "@/src/supabase/supabaseService";
 import { useAppTheme } from "@/src/theme/useAppTheme";
 import { CityPreview } from "@/src/types";
 import { useScrollToTop } from "@react-navigation/native";
@@ -19,8 +20,11 @@ export default function HomeScreen() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     null
   );
-  const debouncedCityName = useDebounce(cityName)
-  const { data:cities } = useCities({name: debouncedCityName, categoryId: selectedCategoryId});
+  const debouncedCityName = useDebounce(cityName);
+  const { data: cities } = useCityFindAll(
+    { name: debouncedCityName, categoryId: selectedCategoryId },
+    supabaseCityRepo
+  );
   const { data: categories } = useCategories();
 
   const { spacing } = useAppTheme();
@@ -38,7 +42,7 @@ export default function HomeScreen() {
   return (
     <Screen style={{ paddingHorizontal: 0 }}>
       <Animated.FlatList
-      itemLayoutAnimation={FadingTransition.duration(500)}
+        itemLayoutAnimation={FadingTransition.duration(500)}
         data={cities}
         ref={flatListRef}
         keyExtractor={item => item.id}
