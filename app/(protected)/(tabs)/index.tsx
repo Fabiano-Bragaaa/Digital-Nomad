@@ -5,11 +5,10 @@ import { ListRenderItemInfo } from "react-native";
 import { Box } from "@/src/components/Box";
 import { CityFilter } from "@/src/containers/CityFilter";
 import { useCategories } from "@/src/data/useCategories";
+import { CityPreview } from "@/src/domain/city/City";
 import { useCityFindAll } from "@/src/domain/city/operations/useCityFindAll";
 import { useDebounce } from "@/src/hooks/useDebounce";
-import { supabaseCityRepo } from "@/src/supabase/supabaseService";
 import { useAppTheme } from "@/src/theme/useAppTheme";
-import { CityPreview } from "@/src/types";
 import { useScrollToTop } from "@react-navigation/native";
 import { useRef, useState } from "react";
 import Animated, { FadingTransition } from "react-native-reanimated";
@@ -21,10 +20,10 @@ export default function HomeScreen() {
     null
   );
   const debouncedCityName = useDebounce(cityName);
-  const { data: cities } = useCityFindAll(
-    { name: debouncedCityName, categoryId: selectedCategoryId },
-    supabaseCityRepo
-  );
+  const { data: cities } = useCityFindAll({
+    name: debouncedCityName,
+    categoryId: selectedCategoryId,
+  });
   const { data: categories } = useCategories();
 
   const { spacing } = useAppTheme();

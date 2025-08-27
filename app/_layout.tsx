@@ -1,3 +1,5 @@
+import { inMemoryRepository } from '@/src/infra/repositories/adapters/inMemory';
+import { RepositoryProvider } from '@/src/infra/repositories/RepositoryProvider';
 import theme from '@/src/theme/theme';
 import { ThemeProvider } from '@shopify/restyle';
 import { useFonts } from 'expo-font';
@@ -39,6 +41,7 @@ export default function RootLayout() {
   }
 
   return (
+    <RepositoryProvider value={inMemoryRepository}>
     <ThemeProvider theme={theme}>
       <Stack screenOptions={{contentStyle: {backgroundColor: theme.colors.background}}}>
         <Stack.Screen name="(protected)" options={{ headerShown: false }} />
@@ -47,5 +50,6 @@ export default function RootLayout() {
       </Stack>
       <StatusBar style="light" />
       </ThemeProvider>
+      </RepositoryProvider>
   );
 }
