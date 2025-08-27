@@ -1,6 +1,6 @@
-import { Category, CategoryCode } from "../domain/category/Category";
-import { City, CityPreview } from "../domain/city/City";
-import { ICityRepo } from "../domain/city/ICityRepo";
+import { Category, CategoryCode } from "../../../../domain/category/Category";
+import { City, CityPreview } from "../../../../domain/city/City";
+import { ICityRepo } from "../../../../domain/city/ICityRepo";
 import { supabase } from "./supabase";
 import { supabaseAdapter } from "./supabaseAdapter";
 
@@ -40,18 +40,6 @@ async function findAll(filters: CityFilters): Promise<CityPreview[]> {
   }
 }
 
-async function listCategories(): Promise<Category[]> {
-  const { data, error } = await supabase.from("categories").select("*");
-  if (error) {
-    throw new Error("Error listing categories");
-  }
-  return data.map(category => ({
-    code: category.code as CategoryCode,
-    description: category.description,
-    id: category.id,
-    name: category.name,
-  }));
-}
 
 async function findById(id: string): Promise<City> {
   const { data, error } = await supabase
