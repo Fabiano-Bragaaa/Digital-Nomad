@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Box } from "../components/Box";
 import { CityCard } from "../components/CityCard";
 import { Text } from "../components/Text";
-import { useRelatedCities } from "../data/useRelatedCities";
+import { useGetRelatedCities } from "../domain/city/operations/useGetRelatedCities";
 import { useAppTheme } from "../theme/useAppTheme";
 
 type CityDetailsRelatedCitiesProps = {
@@ -13,7 +13,7 @@ type CityDetailsRelatedCitiesProps = {
 export function CityDetailsRelatedCities({
   id,
 }: CityDetailsRelatedCitiesProps) {
-const {data: cities} = useRelatedCities(id);
+const {data: cities} = useGetRelatedCities(id);
   const { spacing } = useAppTheme();
   const {bottom} = useSafeAreaInsets()
   const {width, height} = useWindowDimensions()

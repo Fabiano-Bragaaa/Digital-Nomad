@@ -1,15 +1,42 @@
 import { cities } from "@/src/data/cities";
 import { City, CityPreview } from "@/src/domain/city/City";
-import { CityFindAllFilters, ICityRepo } from "../../../../domain/city/ICityRepo";
+import {
+  CityFindAllFilters,
+  ICityRepo,
+} from "../../../../domain/city/ICityRepo";
 
 export class inMemoryCityRepo implements ICityRepo {
-  async findAll(filters: CityFindAllFilters): Promise<CityPreview[]> {
-    return cities
+  async findAll({
+    name,
+    categoryId,
+  }: CityFindAllFilters): Promise<CityPreview[]> {
+    let cityPreviewList = [...cities];
+
+    if (name) {
+      cityPreviewList = cityPreviewList.filter(city => {
+        return city.name.toLowerCase().includes(name.toLowerCase());
+      });
+    }
+
+    if (categoryId) {
+      cityPreviewList = cityPreviewList.filter(city => {
+        return city.categories.some(category => category.id === categoryId);
+      });
+    }
+    return cityPreviewList;
   }
-  findById(id: string): Promise<City> {
-    throw new Error("Method not implemented.");
+  async findById(id: string): Promise<City> {
+  const city = cities.find(city =>city.id === id)
+  if(city){
+    return city
   }
-  getRelatedCities(id: string): Promise<CityPreview[]> {
-    throw new Error("Method not implemented.");
+  throw new Error("City not found")
+  }
+  async getRelatedCities(id: string): Promise<CityPreview[]> {
+    const city = cities.find(city =>city.id === id)
+    if(!city){
+      throw new Error("City not found")
+    }
+    return cities.filter((c) => city.relatedCitiesIds.includes(c.id))
   }
 }

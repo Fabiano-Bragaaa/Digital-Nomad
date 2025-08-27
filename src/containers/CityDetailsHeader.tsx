@@ -6,7 +6,7 @@ import { Box } from "../components/Box";
 import { CategoryPill } from "../components/CategoryPill";
 import { Icon } from "../components/Icon";
 import { IconButton } from "../components/IconButton";
-import { City } from "../types";
+import { City } from "../domain/city/City";
 
 type CityDetailsHeaderProps = Pick<City, "id" | "categories" | "coverImage">;
 

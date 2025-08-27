@@ -4,7 +4,6 @@ import { ListRenderItemInfo } from "react-native";
 
 import { Box } from "@/src/components/Box";
 import { CityFilter } from "@/src/containers/CityFilter";
-import { useCategories } from "@/src/data/useCategories";
 import { CityPreview } from "@/src/domain/city/City";
 import { useCityFindAll } from "@/src/domain/city/operations/useCityFindAll";
 import { useDebounce } from "@/src/hooks/useDebounce";
@@ -13,6 +12,7 @@ import { useScrollToTop } from "@react-navigation/native";
 import { useRef, useState } from "react";
 import Animated, { FadingTransition } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCategoryFindAll } from "@/src/domain/category/operations/useCategoryFindAll";
 
 export default function HomeScreen() {
   const [cityName, setCityName] = useState("");
@@ -24,7 +24,7 @@ export default function HomeScreen() {
     name: debouncedCityName,
     categoryId: selectedCategoryId,
   });
-  const { data: categories } = useCategories();
+  const { data: categories } = useCategoryFindAll();
 
   const { spacing } = useAppTheme();
   const { top } = useSafeAreaInsets();
