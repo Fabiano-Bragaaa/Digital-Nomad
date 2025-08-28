@@ -11,8 +11,8 @@ import { useScrollToTop } from "@react-navigation/native";
 import { useRef, useState } from "react";
 import Animated, { FadingTransition } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDebounce } from "../../../src/hooks/useDebounce";
 import { useAppTheme } from "../../../src/ui/theme/useAppTheme";
+import { useDebounce } from "../../../src/utils/hooks/useDebounce";
 
 export default function HomeScreen() {
   const [cityName, setCityName] = useState("");
