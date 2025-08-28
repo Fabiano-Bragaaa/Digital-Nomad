@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useStorage } from "@/src/infra/storage/StorageContext";
 import { router } from "expo-router";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { AuthUser } from "./AuthUser";
@@ -22,23 +22,24 @@ const AUTH_KEY = "AUTH_KEY";
 export function AuthProvider({ children }: PropsWithChildren) {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [isReady, setIsReady] = useState<boolean>(false);
+  const {storage} = useStorage()
 
   async function saveAuth(user: AuthUser) {
-    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(user));
+    await storage.setItem(AUTH_KEY, user);
     setAuthUser(user);
     router.replace("/");
   }
 
   async function removeAuthUser() {
-    await AsyncStorage.removeItem(AUTH_KEY);
+    await storage.removeItem(AUTH_KEY);
     setAuthUser(null);
   }
 
   async function loadAuthUser() {
     try {
-      const user = await AsyncStorage.getItem(AUTH_KEY);
+      const user = await storage.getItem<AuthUser>(AUTH_KEY);
       if (user) {
-        setAuthUser(JSON.parse(user));
+        setAuthUser(user);
       }
     } catch (error) {
       //TODO
