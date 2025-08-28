@@ -1,10 +1,10 @@
 import { useRepository } from "@/src/infra/repositories/RepositoryProvider";
-import { useFetchData } from "../../../data/useFetchData";
+import { useAppQuery } from "../../../infra/operations/useAppQuery";
 import { CityFindAllFilters } from "../ICityRepo";
 
 export function useCityFindAll(filters: CityFindAllFilters) {
   const {city} = useRepository()
-  return useFetchData(
+  return useAppQuery(
     () => city.findAll(filters),
     [filters.name, filters.categoryId]
   );

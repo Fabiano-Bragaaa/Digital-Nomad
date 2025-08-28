@@ -1,21 +1,20 @@
-import { supabaseRepositories } from '@/src/infra/repositories/adapters/supabase';
-import { RepositoryProvider } from '@/src/infra/repositories/RepositoryProvider';
-import theme from '@/src/theme/theme';
-import { ThemeProvider } from '@shopify/restyle';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { supabaseRepositories } from "@/src/infra/repositories/adapters/supabase";
+import { RepositoryProvider } from "@/src/infra/repositories/RepositoryProvider";
+import theme from "@/src/theme/theme";
+import { ThemeProvider } from "@shopify/restyle";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
 
 if (__DEV__) {
   require("../ReactotronConfig");
 }
 
-
 export default function RootLayout() {
   const [loaded] = useFonts({
     IcoMoon: require("../assets/icons/icomoon.ttf"),
-   PoppinsBlack: require("../assets/fonts/Poppins-Black.ttf"),
+    PoppinsBlack: require("../assets/fonts/Poppins-Black.ttf"),
     PoppinsBlackItalic: require("../assets/fonts/Poppins-BlackItalic.ttf"),
     PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
     PoppinsBoldItalic: require("../assets/fonts/Poppins-BoldItalic.ttf"),
@@ -42,14 +41,17 @@ export default function RootLayout() {
 
   return (
     <RepositoryProvider value={supabaseRepositories}>
-    <ThemeProvider theme={theme}>
-      <Stack screenOptions={{contentStyle: {backgroundColor: theme.colors.background}}}>
-        <Stack.Screen name="(protected)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="sign-in" />
-      </Stack>
-      <StatusBar style="light" />
+      <ThemeProvider theme={theme}>
+        <Stack
+          screenOptions={{
+            contentStyle: { backgroundColor: theme.colors.background },
+          }}>
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+          <Stack.Screen name="sign-in" />
+        </Stack>
+        <StatusBar style="light" />
       </ThemeProvider>
-      </RepositoryProvider>
+    </RepositoryProvider>
   );
 }
