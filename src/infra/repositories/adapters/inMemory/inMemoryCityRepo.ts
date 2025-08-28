@@ -1,8 +1,8 @@
 import { City, CityPreview } from "@/src/domain/city/City";
-import { cities } from "@/src/infra/repositories/adapters/inMemory/data/images/cities";
+import { cities } from "@/src/infra/repositories/adapters/inMemory/data/cities";
 import {
-    CityFindAllFilters,
-    ICityRepo,
+  CityFindAllFilters,
+  ICityRepo,
 } from "../../../../domain/city/ICityRepo";
 
 export class inMemoryCityRepo implements ICityRepo {

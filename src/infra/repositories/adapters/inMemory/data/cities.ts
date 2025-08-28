@@ -1,5 +1,5 @@
-import { City, CityPreview } from "../../../../../../domain/city/City";
-import { categories } from "../../data/categories";
+import { City, CityPreview } from "../../../../../domain/city/City";
+import { categories } from "./categories";
 
 export const cities: (City & {relatedCitiesIds: string[]})[] = [
   {

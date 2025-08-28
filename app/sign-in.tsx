@@ -1,3 +1,4 @@
+import { useAuthSignIn } from "@/src/domain/auth/operations/useAuthSignIn";
 import { Screen } from "@/src/ui/components/Screen";
 import { useState } from "react";
 import { Button, StyleSheet, TextInput } from "react-native";
@@ -6,6 +7,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {mutate: signIn} = useAuthSignIn()
+
+  function handleSubmit() {
+    signIn({
+      email,
+      password,
+    })
+  }
+  
   return (
     <Screen>
       <SafeAreaView>
@@ -16,7 +27,7 @@ export default function SignInScreen() {
         onChangeText={setPassword}
         style={styles.input}
       />
-      <Button onPress={() => {}} title="Sign in" />
+      <Button onPress={handleSubmit} title="Sign in" />
       </SafeAreaView>
     </Screen>
   );
