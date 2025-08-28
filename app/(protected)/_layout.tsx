@@ -2,7 +2,7 @@ import { Redirect, Stack } from "expo-router";
 
 const isSignIn = false
 export default function ProtectedLayout() {
-  if(isSignIn) {
+  if(!isSignIn) {
     return <Redirect href='/sign-in'/>
   }
   return (
