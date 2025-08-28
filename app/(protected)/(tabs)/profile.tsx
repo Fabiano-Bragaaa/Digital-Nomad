@@ -1,4 +1,4 @@
-import { Screen } from "@/src/components/Screen";
+import { Screen } from "@/src/ui/components/Screen";
 import { Text } from "react-native";
 
 export default function Profile() {

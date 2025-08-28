@@ -1,9 +1,9 @@
 import { ScrollView, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useGetRelatedCities } from "../../domain/city/operations/useGetRelatedCities";
 import { Box } from "../components/Box";
 import { CityCard } from "../components/CityCard";
 import { Text } from "../components/Text";
-import { useGetRelatedCities } from "../domain/city/operations/useGetRelatedCities";
 import { useAppTheme } from "../theme/useAppTheme";
 
 type CityDetailsRelatedCitiesProps = {
