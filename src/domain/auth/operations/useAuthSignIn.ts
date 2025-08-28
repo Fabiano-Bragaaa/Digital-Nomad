@@ -1,13 +1,15 @@
+import { useFeedbackService } from "@/src/infra/feedbackService/FeedbackProvider";
 import { useAppMutation } from "@/src/infra/operations/useAppMutation";
 import { useRepository } from "@/src/infra/repositories/RepositoryProvider";
 import { AuthUser } from "../AuthUser";
 
 export function useAuthSignIn() {
   const {auth} = useRepository()
+  const {send} = useFeedbackService()
 
   return useAppMutation<AuthUser, {email: string, password: string}>({
     mutateFn: ({email, password}) => auth.signIn(email, password),
-    onSuccess: (authUser) => console.log('sucesso', authUser.id),
-    onError: () => console.log('erro')  
+    onSuccess: (authUser) => send({type:"success", message: 'Login realizado com sucesso'}),
+    onError: () => send({type:"error", message: 'Erro ao realizar login'})  
   })
 }

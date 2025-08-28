@@ -1,3 +1,5 @@
+import { alertFeedback } from "@/src/infra/feedbackService/adapters/alert/AlertFeedback";
+import { FeedbackProvider } from "@/src/infra/feedbackService/FeedbackProvider";
 import { inMemoryRepository } from "@/src/infra/repositories/adapters/inMemory";
 import { RepositoryProvider } from "@/src/infra/repositories/RepositoryProvider";
 import theme from "@/src/ui/theme/theme";
@@ -40,20 +42,22 @@ export default function RootLayout() {
   }
 
   return (
-    <RepositoryProvider value={inMemoryRepository}>
-      <ThemeProvider theme={theme}>
-        <Stack
-          screenOptions={{
-            contentStyle: { backgroundColor: theme.colors.background },
-            headerShown: false,
-            fullScreenGestureEnabled: true
-          }}>
-          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-          <Stack.Screen name="sign-in" />
-        </Stack>
-        <StatusBar style="light" />
-      </ThemeProvider>
-    </RepositoryProvider>
+    <FeedbackProvider value={alertFeedback}>
+      <RepositoryProvider value={inMemoryRepository}>
+        <ThemeProvider theme={theme}>
+          <Stack
+            screenOptions={{
+              contentStyle: { backgroundColor: theme.colors.background },
+              headerShown: false,
+              fullScreenGestureEnabled: true,
+            }}>
+            <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+            <Stack.Screen name="sign-in" />
+          </Stack>
+          <StatusBar style="light" />
+        </ThemeProvider>
+      </RepositoryProvider>
+    </FeedbackProvider>
   );
 }
