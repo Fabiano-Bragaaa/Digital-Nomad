@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function ResetPasswordScreen() {
   const [email, setEmail] = useState("");
   const { mutate: sendResetPasswordEmail } = useAuthSendResetPasswordEmail({
-    onSuccess: () => router.back(),
+    onSuccess: router.back,
   });
   function handleSubmit() {
     sendResetPasswordEmail({ email });
