@@ -3,8 +3,9 @@ import { Button } from "@/src/ui/components/Button";
 import { Screen } from "@/src/ui/components/Screen";
 import { Text } from "@/src/ui/components/Text";
 import { TextInput } from "@/src/ui/components/TextInput";
+import { Logo } from "@/src/ui/containers/Logo";
+import { Link } from "expo-router";
 import { useState } from "react";
-import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInScreen() {
@@ -23,16 +24,7 @@ export default function SignInScreen() {
   return (
     <Screen>
       <SafeAreaView>
-        <Image
-          source={require("../assets/images/logo.png")}
-          style={{
-            width: 150,
-            height: 60,
-            alignSelf: "center",
-            marginTop: 20,
-            marginBottom: 60,
-          }}
-        />
+        <Logo />
         <Text variant="title22" alignSelf="center" mb="s16">
           Bem-vindo
         </Text>
@@ -49,15 +41,21 @@ export default function SignInScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <Text mb="s16" alignSelf="flex-end" variant="text14" color="primary">
-          Esqueceu sua senha
-        </Text>
+        <Link asChild href="/reset-password">
+          <Text mb="s16" alignSelf="flex-end" variant="text14" color="primary">
+            Esqueceu sua senha
+          </Text>
+        </Link>
         <Button onPress={handleSubmit} title="Entrar" />
-        <Text alignSelf="center" mt="s16" color="gray2">
-          Ainda não tem sua conta?{" "} <Text variant="title14" color="primary">Criar</Text>
-        </Text>
+        <Link asChild href="/sign-up">
+          <Text alignSelf="center" mt="s16" color="gray2">
+            Ainda não tem sua conta?{" "}
+            <Text variant="title14" color="primary">
+              Criar
+            </Text>
+          </Text>
+        </Link>
       </SafeAreaView>
     </Screen>
   );
 }
-
