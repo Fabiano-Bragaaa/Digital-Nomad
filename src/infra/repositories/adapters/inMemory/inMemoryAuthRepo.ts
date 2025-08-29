@@ -3,6 +3,9 @@ import { IAuthRepo } from "@/src/domain/auth/IAuthRepo";
 import { authUser } from "./data/authUsers";
 
 export class InMemoryAuthRepo implements IAuthRepo {
+  async sendResetPasswordEmail(email: string): Promise<void> {
+    console.log("Sending reset password email to", email);
+  }
   async signOut(): Promise<void> {
     //TODO
   }

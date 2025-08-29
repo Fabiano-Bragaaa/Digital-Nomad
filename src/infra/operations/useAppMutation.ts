@@ -6,11 +6,16 @@ type UseAppMutationReturn<TData, TVariables> = {
   error?: unknown;
 };
 
-type useAppMutationParams<TData, TVariables> = {
-  mutateFn: (variables: TVariables) => Promise<TData>;
+export type UseAppMutationOption<TData> = {
   onSuccess?: (data: TData) => void;
   onError?: (error: unknown) => void;
-};
+}
+
+type useAppMutationParams<TData, TVariables> = {
+  mutateFn: (variables: TVariables) => Promise<TData>;
+} & UseAppMutationOption<TData>;
+
+
 
 export function useAppMutation<TData, TVariables>({
   mutateFn,
