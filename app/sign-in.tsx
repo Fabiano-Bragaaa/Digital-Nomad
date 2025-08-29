@@ -1,8 +1,9 @@
 import { useAuthSignIn } from "@/src/domain/auth/operations/useAuthSignIn";
+import { Button } from "@/src/ui/components/Button";
 import { Screen } from "@/src/ui/components/Screen";
 import { TextInput } from "@/src/ui/components/TextInput";
 import { useState } from "react";
-import { Button, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInScreen() {
@@ -36,6 +37,7 @@ export default function SignInScreen() {
           secureTextEntry
         />
         <Button onPress={handleSubmit} title="Sign in" />
+
       </SafeAreaView>
     </Screen>
   );
