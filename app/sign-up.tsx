@@ -20,7 +20,7 @@ export default function SignUpScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <SafeAreaView>
         <Header title="criar conta" />
         <SignUpForm onSubmit={handleSubmit} />
