@@ -5,13 +5,17 @@ import { useAuth } from "../AuthContext";
 import { AuthUser } from "../AuthUser";
 
 export function useAuthSignIn() {
-  const {auth} = useRepository()
-  const {send} = useFeedbackService()
-  const {saveAuth} = useAuth()
+  const { auth } = useRepository();
+  const { send } = useFeedbackService();
+  const { saveAuth } = useAuth();
 
-  return useAppMutation<AuthUser, {email: string, password: string}>({
-    mutateFn: ({email, password}) => auth.signIn(email, password),
-    onSuccess: (authUser) => saveAuth(authUser),
-    onError: () => send({type:"error", message: 'Erro ao realizar login'})  
-  })
+  return useAppMutation<AuthUser, { email: string; password: string }>({
+    mutateFn: ({ email, password }) => auth.signIn(email, password),
+    onSuccess: authUser => saveAuth(authUser),
+    onError: () =>
+      send({
+        type: "error",
+        message: "Erro ao realizar login",
+      }),
+  });
 }

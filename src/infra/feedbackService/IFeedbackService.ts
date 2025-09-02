@@ -1,4 +1,4 @@
-export type FeedbackType = 'success' | 'error'
+export type FeedbackType = 'success' | 'error' | 'warning' | 'info'
 
 export type Feedback = {
   type: FeedbackType;
