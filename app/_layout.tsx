@@ -1,7 +1,7 @@
 import { AuthProvider } from "@/src/domain/auth/AuthContext";
 import { alertFeedback } from "@/src/infra/feedbackService/adapters/alert/AlertFeedback";
 import { FeedbackProvider } from "@/src/infra/feedbackService/FeedbackProvider";
-import { inMemoryRepository } from "@/src/infra/repositories/adapters/inMemory";
+import { supabaseRepositories } from "@/src/infra/repositories/adapters/supabase";
 import { RepositoryProvider } from "@/src/infra/repositories/RepositoryProvider";
 import { asyncStorage } from "@/src/infra/storage/adapters/AsyncStorage";
 import { StorageProvider } from "@/src/infra/storage/StorageContext";
@@ -48,7 +48,7 @@ export default function RootLayout() {
     <StorageProvider storage={asyncStorage}>
       <AuthProvider>
         <FeedbackProvider value={alertFeedback}>
-          <RepositoryProvider value={inMemoryRepository}>
+          <RepositoryProvider value={supabaseRepositories}>
             <ThemeProvider theme={theme}>
               <Stack
                 screenOptions={{

@@ -13,7 +13,7 @@ export function SignUpForm({onSubmit}: SignUpFormProps) {
   const { control, handleSubmit } = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      fullName: "",
+      fullname: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -25,7 +25,7 @@ export function SignUpForm({onSubmit}: SignUpFormProps) {
     <Box>
       <Controller
         control={control}
-        name="fullName"
+        name="fullname"
         render={({ field, fieldState }) => (
           <TextInput
             label="Nome completo"

@@ -14,7 +14,7 @@ export default function SignUpScreen() {
   function handleSubmit(data: SignUpSchema) {
     signUp({
       email: data.email,
-      fullName: data.fullName,
+      fullname: data.fullname,
       password: data.password,
     });
   }
