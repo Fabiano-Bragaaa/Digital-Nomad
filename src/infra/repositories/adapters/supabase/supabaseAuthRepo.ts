@@ -38,8 +38,10 @@ export class SupabaseAuthRepo implements IAuthRepo{
   async signOut(): Promise<void> {
     await supabase.auth.signOut()
   }
-  sendResetPasswordEmail(email: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async sendResetPasswordEmail(email: string): Promise<void> {
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${process.env.EXPO_PUBLIC_WEB_URL}/reset-password`
+    })
   }
 
 
