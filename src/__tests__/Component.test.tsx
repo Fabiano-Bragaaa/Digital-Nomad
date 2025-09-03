@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen, userEvent } from "@testing-library/react-native";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
@@ -20,6 +20,14 @@ function Component({ label, loading }: { label: string; loading: boolean }) {
 }
 
 describe("Component", () => {
+  beforeAll(() =>{
+    jest.useFakeTimers();
+  })
+
+  afterAll(() =>{
+    jest.useRealTimers();
+  })
+
   it("should display the label when is not loading", () => {
     render(<Component label="test" loading={false} />);
   
@@ -48,5 +56,17 @@ describe("Component", () => {
     expect(screen.getByText(/pressed:1/i)).toBeOnTheScreen();
 
   });
+
+  it("should reset the count number", async () => {
+    render(<Component label="test" loading={false} />);
+
+    const user = userEvent.setup()
+
+    await user.press(screen.getByText(/test/i))
+    fireEvent.press(screen.getByText(/test/i)) 
+    expect(screen.getByText(/pressed:2/i)).toBeOnTheScreen();
+
+  });
+  
   
 })
