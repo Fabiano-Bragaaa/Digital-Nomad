@@ -1,0 +1,57 @@
+import { act, renderHook } from "@testing-library/react-native";
+import { AuthUser } from "../../AuthUser";
+import { useAuthSignIn } from "../useAuthSignIn";
+
+const mockSignIn = jest.fn();
+const mockSend = jest.fn();
+const mockSaveAuthUser = jest.fn();
+
+jest.mock("@/src/infra/repositories/RepositoryProvider", () => ({
+  useRepository: () => ({
+    auth: {
+      signIn: mockSignIn,
+    },
+  }),
+}));
+
+jest.mock("@/src/infra/feedbackService/FeedbackProvider", () => ({
+  useFeedbackService: () => ({
+    send: mockSend,
+  }),
+}));
+
+jest.mock("@/src/domain/auth/AuthContext", () => ({
+  useAuth: () => ({
+    saveAuth: mockSaveAuthUser,
+  }),
+}));
+
+describe("useAuthSignIn()", () => {
+  it("calls saveAuthUser and sends success feedback on successful sign in", async () => {
+    const user: AuthUser = {
+      email: "test@test.com",
+      fullname: "Test User",
+      id: "1",
+    };
+
+    mockSignIn.mockResolvedValueOnce(user);
+
+    const { result } = renderHook(() => useAuthSignIn());
+
+    expect(result.current.isLoading).toBe(false);
+
+    await act(async () => {
+      await result.current.mutate({
+        email: "test@test.com",
+        password: "123456",
+      });
+    });
+
+    expect(mockSignIn).toHaveBeenCalledWith("test@test.com", "123456");
+    expect(mockSaveAuthUser).toHaveBeenCalledWith(user);
+    expect(mockSend).toHaveBeenCalledWith({
+      type: "success",
+      message: "Login realizado com sucesso",
+    });
+  });
+});

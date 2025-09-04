@@ -11,7 +11,13 @@ export function useAuthSignIn() {
 
   return useAppMutation<AuthUser, { email: string; password: string }>({
     mutateFn: ({ email, password }) => auth.signIn(email, password),
-    onSuccess: authUser => saveAuth(authUser),
+    onSuccess: (authUser) => {
+      saveAuth(authUser)
+      send({
+        type: 'success',
+        message: 'Login realizado com sucesso'
+      })
+    },
     onError: () =>
       send({
         type: "error",
