@@ -13,7 +13,7 @@ import { useLocalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
-export default function CityDetails() {
+export default function CityDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: city } = useCityById(id);
   const bottomSheetIsOpen = useSharedValue(false);
