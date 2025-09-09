@@ -77,6 +77,7 @@ export function SignUpForm({onSubmit}: SignUpFormProps) {
           <TextInput
             label="Confirmar senha"
             placeholder="Repita a senha"
+            testID="confirm-password"
             secureTextEntry
             autoCapitalize="none"
             value={field.value}
