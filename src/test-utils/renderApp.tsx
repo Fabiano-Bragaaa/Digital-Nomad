@@ -9,7 +9,8 @@ import SignUpScreen from '@/app/sign-up'
 import { ThemeProvider } from '@shopify/restyle'
 import { renderRouter } from 'expo-router/testing-library'
 import { PropsWithChildren } from 'react'
-import { AuthProvider } from '../domain/auth/AuthContext'
+import { AuthContext, AuthProvider } from '../domain/auth/AuthContext'
+import { AuthUser } from '../domain/auth/AuthUser'
 import { Toast } from '../infra/feedbackService/adapters/toast/Toast'
 import { toastFeedback } from '../infra/feedbackService/adapters/toast/ToastFeedback'
 import { FeedbackProvider } from '../infra/feedbackService/FeedbackProvider'
@@ -20,12 +21,35 @@ import { StorageProvider } from '../infra/storage/StorageContext'
 import { AppStack } from '../ui/navigation/AppStack'
 import theme from '../ui/theme/theme'
 
-export function renderApp() {
+function MockedAuthProvider({children}: PropsWithChildren) {
+
+  const authUser:AuthUser = {
+    email: 'test@test.com',
+    fullname: 'Test User',
+    id: '1',
+  }
+
+  return (
+    <AuthContext.Provider value={{
+      isReady: true,
+      authUser,
+      saveAuth: async () => {},
+      removeAuthUser: async () => {},
+    }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+
+export function renderApp(options?: {isAuthenticated?: boolean}) {
+
+  const FinalAuthProvider = options?.isAuthenticated ? MockedAuthProvider : AuthProvider
 
   function Wrapper({children}: PropsWithChildren) {
     return (
       <StorageProvider storage={inMemoryStorage}>
-        <AuthProvider>
+        <FinalAuthProvider>
           <FeedbackProvider value={toastFeedback}>
             <RepositoryProvider value={inMemoryRepository}>
               <ThemeProvider theme={theme}>
@@ -34,7 +58,7 @@ export function renderApp() {
               </ThemeProvider>
             </RepositoryProvider>
           </FeedbackProvider>
-        </AuthProvider>
+        </FinalAuthProvider>
       </StorageProvider>
     );
   }
