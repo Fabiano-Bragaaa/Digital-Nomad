@@ -36,8 +36,8 @@ export default function SignInScreen() {
           onChangeText={setEmail}
         />
         <TextInput
-          label="Password"
-          placeholder="Password"
+          label="Senha"
+          placeholder="Senha"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
