@@ -6,6 +6,7 @@ import { useCategoryFindAll } from "@/src/domain/category/operations/useCategory
 import { CityPreview } from "@/src/domain/city/City";
 import { useCityFindAll } from "@/src/domain/city/operations/useCityFindAll";
 import { Box } from "@/src/ui/components/Box";
+import { Text } from "@/src/ui/components/Text";
 import { CityFilter } from "@/src/ui/containers/CityFilter";
 import { useScrollToTop } from "@react-navigation/native";
 import { useRef, useState } from "react";
@@ -20,7 +21,7 @@ export default function HomeScreen() {
     null
   );
   const debouncedCityName = useDebounce(cityName);
-  const { data: cities } = useCityFindAll({
+  const { data: cities, isLoading: isLoadingCities, error: errorCities } = useCityFindAll({
     name: debouncedCityName,
     categoryId: selectedCategoryId,
   });
@@ -38,6 +39,25 @@ export default function HomeScreen() {
     );
   }
 
+  function renderEmptyComponent() {
+    let Content;
+
+    if (isLoadingCities) {
+      Content = <Text>Carregando cidades...</Text>;
+    } else if (errorCities) {
+      const errorMessage = errorCities instanceof Error ? errorCities.message : String(errorCities);
+      Content = <Text>Erro ao carregar cidades {errorMessage}</Text>;
+    } else {
+      Content = <Text>Nenhuma cidade encontrada</Text>;
+    }
+
+    return (
+      <Box alignItems="center" justifyContent="center" flex={1}>
+        {Content}
+      </Box>
+    );
+  }
+
   return (
     <Screen style={{ paddingHorizontal: 0 }}>
       <Animated.FlatList
@@ -47,6 +67,7 @@ export default function HomeScreen() {
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
+        ListEmptyComponent={renderEmptyComponent()}
         ListHeaderComponent={
           <CityFilter
             onChangeSelectedCategoryId={setSelectedCategoryId}

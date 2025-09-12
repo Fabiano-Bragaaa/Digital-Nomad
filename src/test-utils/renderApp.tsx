@@ -11,6 +11,7 @@ import { renderRouter } from 'expo-router/testing-library'
 import { PropsWithChildren } from 'react'
 import { AuthContext, AuthProvider } from '../domain/auth/AuthContext'
 import { AuthUser } from '../domain/auth/AuthUser'
+import { Repositories } from '../domain/Repositories'
 import { Toast } from '../infra/feedbackService/adapters/toast/Toast'
 import { toastFeedback } from '../infra/feedbackService/adapters/toast/ToastFeedback'
 import { FeedbackProvider } from '../infra/feedbackService/FeedbackProvider'
@@ -20,6 +21,14 @@ import { inMemoryStorage } from '../infra/storage/adapters/InMemoryStorage'
 import { StorageProvider } from '../infra/storage/StorageContext'
 import { AppStack } from '../ui/navigation/AppStack'
 import theme from '../ui/theme/theme'
+
+import cloneDeep from 'lodash/cloneDeep'
+import merge from 'lodash/merge'
+
+
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
 
 function MockedAuthProvider({children}: PropsWithChildren) {
 
@@ -42,7 +51,11 @@ function MockedAuthProvider({children}: PropsWithChildren) {
 }
 
 
-export function renderApp(options?: {isAuthenticated?: boolean}) {
+export function renderApp(options?: {isAuthenticated?: boolean, repository?: DeepPartial<Repositories>}) {
+
+  const finalRepository:Repositories = 
+    merge(cloneDeep(inMemoryRepository), options?.repository ?? {})
+  
 
   const FinalAuthProvider = options?.isAuthenticated ? MockedAuthProvider : AuthProvider
 
@@ -51,7 +64,7 @@ export function renderApp(options?: {isAuthenticated?: boolean}) {
       <StorageProvider storage={inMemoryStorage}>
         <FinalAuthProvider>
           <FeedbackProvider value={toastFeedback}>
-            <RepositoryProvider value={inMemoryRepository}>
+            <RepositoryProvider value={finalRepository}>
               <ThemeProvider theme={theme}>
                 {children}
                 <Toast/>

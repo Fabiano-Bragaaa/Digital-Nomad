@@ -23,20 +23,21 @@ export class inMemoryCityRepo implements ICityRepo {
         return city.categories.some(category => category.id === categoryId);
       });
     }
+
     return cityPreviewList;
   }
   async findById(id: string): Promise<City> {
-  const city = cities.find(city =>city.id === id)
-  if(city){
-    return city
-  }
-  throw new Error("City not found")
+    const city = cities.find(city => city.id === id);
+    if (city) {
+      return city;
+    }
+    throw new Error("City not found");
   }
   async getRelatedCities(id: string): Promise<CityPreview[]> {
-    const city = cities.find(city =>city.id === id)
-    if(!city){
-      throw new Error("City not found")
+    const city = cities.find(city => city.id === id);
+    if (!city) {
+      throw new Error("City not found");
     }
-    return cities.filter((c) => city.relatedCitiesIds.includes(c.id))
+    return cities.filter(c => city.relatedCitiesIds.includes(c.id));
   }
 }

@@ -28,4 +28,34 @@ describe("integration: Home", () => {
 
     expect(await screen.findByText(/tóquio/i)).toBeOnTheScreen();
   });
+  it("should display the error message when the server is down", async () => {
+    renderApp({
+      isAuthenticated: true,
+      repository: {
+        city: {
+          findAll: async () => {
+            return Promise.reject(new Error("server is down"));
+          },
+        },
+      },
+    });
+
+    expect (await screen.findByText(/erro ao carregar cidades/i)).toBeOnTheScreen();
+    expect (await screen.findByText(/server is down/i)).toBeOnTheScreen();
+  });
+  it("should display the empty message when the list is empty", async () => {
+    renderApp({
+      isAuthenticated: true,
+      repository: {
+        city: {
+          findAll: async () => {
+            return [];
+          },
+        },
+      },
+    });
+
+    expect (await screen.findByText(/carregando cidades/i)).toBeOnTheScreen();
+    expect (await screen.findByText(/nenhuma cidade encontrada/i)).toBeOnTheScreen();
+  });
 });

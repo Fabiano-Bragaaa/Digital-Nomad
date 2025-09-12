@@ -24,6 +24,7 @@ export class InMemoryAuthRepo implements IAuthRepo {
       return user;
     }
 
+
     throw new Error("User not found");
   }
 }
