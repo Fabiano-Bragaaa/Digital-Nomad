@@ -2,13 +2,14 @@ import { AuthProvider } from "@/src/domain/auth/AuthContext";
 import { Toast } from "@/src/infra/feedbackService/adapters/toast/Toast";
 import { toastFeedback } from "@/src/infra/feedbackService/adapters/toast/ToastFeedback";
 import { FeedbackProvider } from "@/src/infra/feedbackService/FeedbackProvider";
-import { inMemoryRepository } from "@/src/infra/repositories/adapters/inMemory";
+import { supabaseRepositories } from "@/src/infra/repositories/adapters/supabase";
 import { RepositoryProvider } from "@/src/infra/repositories/RepositoryProvider";
 import { asyncStorage } from "@/src/infra/storage/adapters/AsyncStorage";
 import { StorageProvider } from "@/src/infra/storage/StorageContext";
 import { AppStack } from "@/src/ui/navigation/AppStack";
 import theme from "@/src/ui/theme/theme";
 import { ThemeProvider } from "@shopify/restyle";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import "react-native-reanimated";
 
@@ -44,18 +45,22 @@ export default function RootLayout() {
     return null;
   }
 
+  const queryClient = new QueryClient();
+
   return (
-    <StorageProvider storage={asyncStorage}>
-      <AuthProvider>
-        <FeedbackProvider value={toastFeedback}>
-          <RepositoryProvider value={inMemoryRepository}>
-            <ThemeProvider theme={theme}>
-              <AppStack/>
-              <Toast/>
-            </ThemeProvider>
-          </RepositoryProvider>
-        </FeedbackProvider>
-      </AuthProvider>
-    </StorageProvider>
+    <QueryClientProvider client={queryClient}>
+      <StorageProvider storage={asyncStorage}>
+        <AuthProvider>
+          <FeedbackProvider value={toastFeedback}>
+            <RepositoryProvider value={supabaseRepositories}>
+              <ThemeProvider theme={theme}>
+                <AppStack />
+                <Toast />
+              </ThemeProvider>
+            </RepositoryProvider>
+          </FeedbackProvider>
+        </AuthProvider>
+      </StorageProvider>
+    </QueryClientProvider>
   );
 }
