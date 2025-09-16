@@ -1,38 +1,28 @@
-
-import { useEffect, useState } from "react";
-
+import { useQuery } from "@tanstack/react-query";
 
 type UseFetchDataReturn<DataT> = {
-  data?: DataT
-  isLoading: boolean
-  error?:  unknown
-}
+  data?: DataT;
+  isLoading: boolean;
+  error?: unknown;
+};
 
-export function useAppQuery<DataT>(fetchData: () => Promise<DataT>, dependencies: React.DependencyList = []): UseFetchDataReturn<DataT>  {
-  const [data, setData] = useState<DataT>()
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<unknown>(null)
+type useAppQueryParams<DataT> = {
+  queryKey: (string | number | undefined | null)[];
+  fetchData: () => Promise<DataT>;
+};
 
-  async function _fetchData() {
-    try{
-      const _data = await fetchData()
-      setData(_data)
-    } catch (error) {
-      setError(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  useEffect(() =>{
-    _fetchData()
-  }, dependencies)
+export function useAppQuery<DataT>({
+  queryKey,
+  fetchData,
+}: useAppQueryParams<DataT>): UseFetchDataReturn<DataT> {
+  const { data, error, isPending } = useQuery({
+    queryKey,
+    queryFn: fetchData,
+  });
 
   return {
-    isLoading,
+    isLoading: isPending,
     data,
-    error
-  }
-
+    error,
+  };
 }
-

@@ -4,5 +4,8 @@ import { useRepository } from "@/src/infra/repositories/RepositoryProvider";
 export function useCategoryFindAll() {
   const {category} = useRepository()
 
-  return useAppQuery(() => category.findAll())
+  return useAppQuery({
+    queryKey: ["categories"],
+    fetchData: () => category.findAll(),
+  });
 }
