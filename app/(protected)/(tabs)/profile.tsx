@@ -3,23 +3,25 @@ import { useAuthSignOut } from "@/src/domain/auth/operations/useAuthSignOut";
 import { Box } from "@/src/ui/components/Box";
 import { Icon } from "@/src/ui/components/Icon";
 import { Screen } from "@/src/ui/components/Screen";
-import { Pressable, Text } from "react-native";
+import { Text } from "@/src/ui/components/Text";
+import { ProfileHeader } from "@/src/ui/containers/Profile/ProfileHeader";
+import { Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const { mutate: signOut } = useAuthSignOut();
   const { data: user } = useAuthGetUser();
 
-  console.log(user)
+  console.log(user);
 
   return (
     <Screen>
       <SafeAreaView>
-        <Text>Profile</Text>
+        {user && <ProfileHeader authUser={user} />}
         <Pressable onPress={signOut}>
-          <Box flexDirection="row"  alignItems="center" gap='s4'>
-            <Text>Sair</Text>
-            <Icon name="Logout" />
+          <Box flexDirection="row" alignItems="center" alignSelf="center" gap="s4" mt="s24">
+            <Icon name="Logout" color="fbErrorSurface" />
+            <Text color="fbErrorSurface">Sair</Text>
           </Box>
         </Pressable>
       </SafeAreaView>
