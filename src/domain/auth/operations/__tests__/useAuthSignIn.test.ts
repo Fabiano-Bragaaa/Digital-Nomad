@@ -1,4 +1,5 @@
-import { act, renderHook } from "@testing-library/react-native";
+import { AllTheProviders } from "@/src/test-utils/renderComponent";
+import { act, cleanup, renderHook } from "@testing-library/react-native";
 import { AuthUser } from "../../AuthUser";
 import { useAuthSignIn } from "../useAuthSignIn";
 
@@ -30,7 +31,10 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
+
+
 describe("useAuthSignIn()", () => {
+  afterEach(() => cleanup());
   it("calls saveAuthUser and sends success feedback on successful sign in", async () => {
     const user: AuthUser = {
       email: "test@test.com",
@@ -40,7 +44,7 @@ describe("useAuthSignIn()", () => {
 
     mockSignIn.mockResolvedValueOnce(user);
 
-    const { result } = renderHook(() => useAuthSignIn());
+    const { result } = renderHook(() => useAuthSignIn(), {wrapper: AllTheProviders});
 
     expect(result.current.isLoading).toBe(false);
 
@@ -60,7 +64,7 @@ describe("useAuthSignIn()", () => {
   });
   it("sends an error feedback on failed sign in", async () => {
     mockSignIn.mockRejectedValueOnce(new Error("Invalid credentials"));
-    const { result } = renderHook(() => useAuthSignIn());
+    const { result } = renderHook(() => useAuthSignIn(), {wrapper: AllTheProviders});
 
     expect(result.current.isLoading).toBe(false);
 

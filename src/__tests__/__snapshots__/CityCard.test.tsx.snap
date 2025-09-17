@@ -105,7 +105,7 @@ exports[`<CityCard /> should render the component 1`] = `
         }
       >
         <View
-          testID="fake-icon"
+          testID="Favorite-outline"
         />
       </View>
       <View

@@ -22,8 +22,10 @@ import { StorageProvider } from '../infra/storage/StorageContext'
 import { AppStack } from '../ui/navigation/AppStack'
 import theme from '../ui/theme/theme'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'lodash/merge'
+import { queryClientOptions } from './queryClientOptions'
 
 
 type DeepPartial<T> = {
@@ -58,9 +60,11 @@ export function renderApp(options?: {isAuthenticated?: boolean, repository?: Dee
   
 
   const FinalAuthProvider = options?.isAuthenticated ? MockedAuthProvider : AuthProvider
+  const queryClient = new QueryClient(queryClientOptions)
 
   function Wrapper({children}: PropsWithChildren) {
     return (
+      <QueryClientProvider client={queryClient}>
       <StorageProvider storage={inMemoryStorage}>
         <FinalAuthProvider>
           <FeedbackProvider value={toastFeedback}>
@@ -73,6 +77,7 @@ export function renderApp(options?: {isAuthenticated?: boolean, repository?: Dee
           </FeedbackProvider>
         </FinalAuthProvider>
       </StorageProvider>
+      </QueryClientProvider>
     );
   }
 
