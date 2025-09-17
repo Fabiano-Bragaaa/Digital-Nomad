@@ -3,6 +3,9 @@ import { AuthSignUpParams, IAuthRepo } from "@/src/domain/auth/IAuthRepo";
 import { authUser } from "./data/authUsers";
 
 export class InMemoryAuthRepo implements IAuthRepo {
+  async getUser(): Promise<AuthUser> {
+    return authUser[0]
+  }
   async signUp(params: AuthSignUpParams): Promise<void> {
     const userAlreadyExists = authUser.find(user => user.email === params.email);
     if (userAlreadyExists) {

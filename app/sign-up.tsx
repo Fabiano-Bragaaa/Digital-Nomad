@@ -12,6 +12,7 @@ export default function SignUpScreen() {
     onSuccess: router.back,
   });
   function handleSubmit(data: SignUpSchema) {
+    console.log(data)
     signUp({
       email: data.email,
       fullname: data.fullname,

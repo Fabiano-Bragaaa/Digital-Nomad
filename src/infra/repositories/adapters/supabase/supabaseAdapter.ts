@@ -70,7 +70,8 @@ function toAuthUser(supabaseUser:SupabaseAuthUser):AuthUser {
   return {
     id:supabaseUser.id,
     email:supabaseUser.email,
-    fullname:supabaseUser.user_metadata.full_name
+    fullname:supabaseUser.user_metadata.fullname,
+    createdAt:supabaseUser.created_at
   }
 }
 

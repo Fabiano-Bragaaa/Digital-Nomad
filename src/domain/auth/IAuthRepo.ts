@@ -11,4 +11,5 @@ export interface IAuthRepo {
   signOut(): Promise<void>;
   sendResetPasswordEmail(email: string): Promise<void>;
   signUp(params: AuthSignUpParams): Promise<void>;
+  getUser():Promise<AuthUser>;
 }
