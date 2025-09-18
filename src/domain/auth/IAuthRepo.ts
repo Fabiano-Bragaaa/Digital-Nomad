@@ -11,6 +11,11 @@ export type AuthUpdateProfileParams = {
   email: string;
 }
 
+export type AuthUpdatePasswordParams = {
+  password: string;
+  newPassword: string;
+}
+
 export interface IAuthRepo {
   signIn(email: string, password: string): Promise<AuthUser>;
   signOut(): Promise<void>;
@@ -18,4 +23,5 @@ export interface IAuthRepo {
   signUp(params: AuthSignUpParams): Promise<void>;
   getUser():Promise<AuthUser>;
   updateProfile(params: AuthUpdateProfileParams): Promise<void>;
+  updatePassword(params: AuthUpdatePasswordParams): Promise<void>;
 }
