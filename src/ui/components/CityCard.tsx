@@ -1,5 +1,5 @@
 import { CityPreview } from "@/src/domain/city/City";
-import { useCityToggeFavorite } from "@/src/domain/city/operations/useCityToggeFavorite";
+import { useCityToggleFavorite } from "@/src/domain/city/operations/useCityToggleFavorite";
 import { Link } from "expo-router";
 import { ImageBackground, ImageBackgroundProps, Pressable } from "react-native";
 import { useAppTheme } from "../theme/useAppTheme";
@@ -15,7 +15,7 @@ type CityCardProps = {
 
 export function CityCard({ cityPreview, style }: CityCardProps) {
   const { borderRadii } = useAppTheme();
-  const { mutate: toggleFavorite } = useCityToggeFavorite();
+  const { mutate: toggleFavorite } = useCityToggleFavorite();
   return (
     <Link push href={`/city-details/${cityPreview.id}`} asChild>
       <Pressable>
