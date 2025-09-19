@@ -1,6 +1,8 @@
-import { Category, CategoryCode } from "../../../../domain/category/Category";
 import { City, CityPreview } from "../../../../domain/city/City";
-import { ICityRepo } from "../../../../domain/city/ICityRepo";
+import {
+  CityToggleFavoriteParams,
+  ICityRepo,
+} from "../../../../domain/city/ICityRepo";
 import { supabase } from "./supabase";
 import { supabaseAdapter } from "./supabaseAdapter";
 
@@ -40,7 +42,6 @@ async function findAll(filters: CityFilters): Promise<CityPreview[]> {
   }
 }
 
-
 async function findById(id: string): Promise<City> {
   const { data, error } = await supabase
     .from("cities_with_full_info")
@@ -64,8 +65,29 @@ async function getRelatedCities(id: string): Promise<CityPreview[]> {
   return data.map(supabaseAdapter.toCityPreview);
 }
 
-export const supabaseCityRepo:ICityRepo = {
+async function toggleFavorite(params: CityToggleFavoriteParams): Promise<void> {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error || !data.session) {
+    throw new Error("invalid session");
+  }
+
+  if (params.isFavorite) {
+    await supabase
+      .from("favorite_cities")
+      .delete()
+      .eq("user_id", data.session.user.id)
+      .eq("city_id", params.cityId);
+  } else {
+    await supabase
+      .from("favorite_cities")
+      .insert({ user_id: data.session.user.id, city_id: params.cityId });
+  }
+}
+
+export const supabaseCityRepo: ICityRepo = {
   findAll,
   findById,
   getRelatedCities,
+  toggleFavorite,
 };
