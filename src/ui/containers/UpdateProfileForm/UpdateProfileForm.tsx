@@ -50,7 +50,7 @@ export function UpdateProfileForm({ onSubmit, defaultValues }: UpdateProfileForm
         )}
       />
 
-      <Button onPress={handleSubmit(onSubmit)} title="Atualizar perfil" mt="s16" />
+      <Button onPress={handleSubmit(onSubmit)} title="Atualizar" mt="s16" />
     </Box>
   );
 }

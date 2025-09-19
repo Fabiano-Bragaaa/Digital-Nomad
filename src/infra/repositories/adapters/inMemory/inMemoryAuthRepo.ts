@@ -1,8 +1,14 @@
 import { AuthUser } from "@/src/domain/auth/AuthUser";
-import { AuthSignUpParams, IAuthRepo } from "@/src/domain/auth/IAuthRepo";
+import { AuthSignUpParams, AuthUpdatePasswordParams, AuthUpdateProfileParams, IAuthRepo } from "@/src/domain/auth/IAuthRepo";
 import { authUser } from "./data/authUsers";
 
 export class InMemoryAuthRepo implements IAuthRepo {
+  async updateProfile(params: AuthUpdateProfileParams): Promise<void> {
+    return
+  }
+  async updatePassword(params: AuthUpdatePasswordParams): Promise<void> {
+    return
+  }
   async getUser(): Promise<AuthUser> {
     return authUser[0]
   }
@@ -27,7 +33,7 @@ export class InMemoryAuthRepo implements IAuthRepo {
       return user;
     }
 
-
+    
     throw new Error("User not found");
   }
 }

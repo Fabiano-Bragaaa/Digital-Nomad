@@ -12,7 +12,6 @@ export default function ProfileScreen() {
   const { mutate: signOut } = useAuthSignOut();
   const { data: user } = useAuthGetUser();
 
-  console.log(user);
 
   return (
     <Screen>
