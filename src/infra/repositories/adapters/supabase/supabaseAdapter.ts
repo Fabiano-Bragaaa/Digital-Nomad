@@ -87,5 +87,6 @@ function toAuthUser(supabaseUser:SupabaseAuthUser):AuthUser {
 export const supabaseAdapter = {
   toCity,
   toCityPreview,
-  toAuthUser
+  toAuthUser,
+  toCategory
 }

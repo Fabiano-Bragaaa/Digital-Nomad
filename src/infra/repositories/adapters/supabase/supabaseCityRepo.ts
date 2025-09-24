@@ -1,5 +1,6 @@
 import { City, CityPreview } from "../../../../domain/city/City";
 import {
+  CityGroupByCategory,
   CityToggleFavoriteParams,
   ICityRepo,
 } from "../../../../domain/city/ICityRepo";
@@ -12,7 +13,8 @@ export type CityFilters = {
   categoryId?: string | null;
 };
 
-const CITY_FIELDS = "id, name, country, cover_image, favorite_cities!left(user_id)";
+const CITY_FIELDS =
+  "id, name, country, cover_image, favorite_cities!left(user_id)";
 
 async function findAll(filters: CityFilters): Promise<CityPreview[]> {
   try {
@@ -41,7 +43,7 @@ async function findAll(filters: CityFilters): Promise<CityPreview[]> {
       throw new Error("No data found");
     }
 
-    return cities.map((city) => supabaseAdapter.toCityPreview(city));
+    return cities.map(city => supabaseAdapter.toCityPreview(city, true));
   } catch (error) {
     throw error;
   }
@@ -69,7 +71,7 @@ async function getRelatedCities(id: string): Promise<CityPreview[]> {
     .select(CITY_FIELDS)
     .eq("source_city_id", id)
     .throwOnError();
-  return data.map((city) => supabaseAdapter.toCityPreview(city));
+  return data.map(city => supabaseAdapter.toCityPreview(city));
 }
 
 async function toggleFavorite(params: CityToggleFavoriteParams): Promise<void> {
@@ -106,7 +108,40 @@ async function findAllFavorites(): Promise<CityPreview[]> {
     throw new Error("No data found");
   }
 
-  return data.map((item) => supabaseAdapter.toCityPreview(item.cities, true));
+  return data.map(item => supabaseAdapter.toCityPreview(item.cities, true));
+}
+
+async function findGroupByCategory(): Promise<CityGroupByCategory[]> {
+  const { data } = await supabase
+    .from("categories")
+    .select(
+      `
+    id,
+    name,
+    description,
+    code,
+    city_categories(
+    cities(
+    id,
+    name,
+    country,
+    cover_image
+    )
+    )`
+    )
+    .throwOnError();
+
+  return data.map(item => ({
+    category: supabaseAdapter.toCategory({
+      code: item.code,
+      description: item.description,
+      id: item.id,
+      name: item.name,
+    }),
+    cities: item.city_categories.map(city =>
+      supabaseAdapter.toCityPreview(city.cities, true)
+    ),
+  }));
 }
 
 export const supabaseCityRepo: ICityRepo = {
@@ -115,4 +150,5 @@ export const supabaseCityRepo: ICityRepo = {
   getRelatedCities,
   toggleFavorite,
   findAllFavorites,
+  findGroupByCategory,
 };

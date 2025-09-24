@@ -1,6 +1,6 @@
 import { CityPreview } from "@/src/domain/city/City";
 import { Link } from "expo-router";
-import { ImageBackground, ImageBackgroundProps, Pressable } from "react-native";
+import { ImageBackground, Pressable, useWindowDimensions } from "react-native";
 import { useAppTheme } from "../theme/useAppTheme";
 import { BlackOpacity } from "./BlackOpacity";
 import { Box } from "./Box";
@@ -9,10 +9,18 @@ import { Text } from "./Text";
 
 type CityCardProps = {
   cityPreview: CityPreview;
-  style?: ImageBackgroundProps["style"];
+  type?: "small" | "large";
+  disabledFavorite?: boolean;
 };
 
-export function CityCard({ cityPreview, style }: CityCardProps) {
+export function CityCard({
+  cityPreview,
+  type = "large",
+  disabledFavorite = false,
+}: CityCardProps) {
+  const { width, height } = useWindowDimensions();
+  const style =
+    type === "small" ? { width: width * 0.6, height: height * 0.3 } : undefined;
   const { borderRadii } = useAppTheme();
   return (
     <Link push href={`/city-details/${cityPreview.id}`} asChild>
@@ -27,9 +35,15 @@ export function CityCard({ cityPreview, style }: CityCardProps) {
           imageStyle={{ borderRadius: borderRadii.default }}>
           <BlackOpacity />
           <Box flex={1} padding="s24" justifyContent="space-between">
-            <Box alignSelf="flex-end">  
-            <CityFavoriteButton id={cityPreview.id} isFavorite={cityPreview.isFavorite} />
-            </Box>
+              <Box alignSelf="flex-end">
+            {!disabledFavorite && (
+                <CityFavoriteButton
+                  id={cityPreview.id}
+                  isFavorite={cityPreview.isFavorite}
+                />
+              )}
+              </Box>
+
             <Box>
               <Text variant="title22">{cityPreview.name}</Text>
               <Text variant="text16">{cityPreview.country}</Text>

@@ -1,4 +1,4 @@
-import { ScrollView, useWindowDimensions } from "react-native";
+import { ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useGetRelatedCities } from "../../domain/city/operations/useGetRelatedCities";
 import { Box } from "../components/Box";
@@ -16,7 +16,7 @@ export function CityDetailsRelatedCities({
 const {data: cities} = useGetRelatedCities(id);
   const { spacing } = useAppTheme();
   const {bottom} = useSafeAreaInsets()
-  const {width, height} = useWindowDimensions()
+
   return (
     <Box style={{paddingBottom: bottom}}>
       <Text variant="title22" mb="s16" paddingHorizontal="padding">
@@ -33,7 +33,7 @@ const {data: cities} = useGetRelatedCities(id);
           <CityCard
             key={city.id}
             cityPreview={city}
-            style={{ width: width * 0.6, height: height * 0.3 }}
+            type="small"
           />
         ))}
       </ScrollView>
