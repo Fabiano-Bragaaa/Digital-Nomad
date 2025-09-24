@@ -2,10 +2,17 @@ import { City, CityPreview } from "@/src/domain/city/City";
 import { cities } from "@/src/infra/repositories/adapters/inMemory/data/cities";
 import {
   CityFindAllFilters,
+  CityToggleFavoriteParams,
   ICityRepo,
 } from "../../../../domain/city/ICityRepo";
 
 export class inMemoryCityRepo implements ICityRepo {
+  toggleFavorite(params: CityToggleFavoriteParams): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  findAllFavorites(): Promise<CityPreview[]> {
+    throw new Error("Method not implemented.");
+  }
   async findAll({
     name,
     categoryId,

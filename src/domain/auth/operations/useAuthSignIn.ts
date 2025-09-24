@@ -20,10 +20,9 @@ export function useAuthSignIn() {
         message: 'Login realizado com sucesso'
       })
     },
-    onError: () =>
-      send({
-        type: "error",
-        message: "Erro ao realizar login",
-      }),
+    onError: (error) =>{
+      const message = error instanceof Error && error.message ? error.message : 'Erro ao realizar login'
+      send({ type: 'error', message })
+    },
   });
 }

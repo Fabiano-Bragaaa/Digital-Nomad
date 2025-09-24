@@ -18,14 +18,14 @@ export class SupabaseAuthRepo implements IAuthRepo {
     });
 
     if (error) {
-      throw new Error("erro on update password");
+      throw new Error(error.message, { cause: error });
     }
   }
   async getUser(): Promise<AuthUser> {
     const { data, error } = await supabase.auth.getUser();
 
-    if (error) {
-      throw new Error("user not found");
+    if (error || !data?.user) {
+      throw new Error(error?.message || "user not found", { cause: error });
     }
 
     return supabaseAdapter.toAuthUser(data.user);
@@ -37,7 +37,11 @@ export class SupabaseAuthRepo implements IAuthRepo {
     });
 
     if (error) {
-      throw new Error("user not found");
+      throw new Error(error.message, { cause: error });
+    }
+
+    if (!data?.user) {
+      throw new Error("unable to retrieve user after sign in");
     }
 
     return supabaseAdapter.toAuthUser(data.user);
@@ -55,7 +59,7 @@ export class SupabaseAuthRepo implements IAuthRepo {
     });
 
     if (error) {
-      throw new Error("erro on register user");
+      throw new Error(error.message, { cause: error });
     }
 
     return;
@@ -70,7 +74,7 @@ export class SupabaseAuthRepo implements IAuthRepo {
     });
 
     if (error) {
-      throw new Error("erro on update profile");
+      throw new Error(error.message, { cause: error });
     }
   }
 
@@ -78,8 +82,11 @@ export class SupabaseAuthRepo implements IAuthRepo {
     await supabase.auth.signOut();
   }
   async sendResetPasswordEmail(email: string): Promise<void> {
-    await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${process.env.EXPO_PUBLIC_WEB_URL}/reset-password`,
     });
+    if (error) {
+      throw new Error(error.message, { cause: error });
+    }
   }
 }

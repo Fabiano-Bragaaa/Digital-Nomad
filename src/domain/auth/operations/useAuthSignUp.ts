@@ -14,7 +14,8 @@ export function useAuthSignUp(options?: UseAppMutationOption<void>) {
       options?.onSuccess?.()
     },
     onError: (error) => {
-      send({type:"error", message: 'Erro ao realizar o sign up'})
+      const message = error instanceof Error && error.message ? error.message : 'Erro ao realizar o sign up'
+      send({type:'error', message})
       options?.onError?.(error)
     }  
   })
