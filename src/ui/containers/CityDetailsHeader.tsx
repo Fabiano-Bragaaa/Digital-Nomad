@@ -5,7 +5,7 @@ import { City } from "../../domain/city/City";
 import { BlackOpacity } from "../components/BlackOpacity";
 import { Box } from "../components/Box";
 import { CategoryPill } from "../components/CategoryPill";
-import { Icon } from "../components/Icon";
+import { CityFavoriteButton } from "../components/CityFavoriteButton";
 import { IconButton } from "../components/IconButton";
 
 type CityDetailsHeaderProps = Pick<
@@ -36,11 +36,7 @@ export function CityDetailsHeader({
           paddingHorizontal="padding"
           style={{ paddingTop: top }}>
           <IconButton iconName="Chevron-left" onPress={router.back} />
-          <Icon
-            name={isFavorite ? "Favorite-fill" : "Favorite-outline"}
-            size={30}
-            color={isFavorite ? "primary" : "pureWhite"}
-          />
+          <CityFavoriteButton size={30} id={id} isFavorite={isFavorite} />
         </Box>
       </ImageBackground>
       <ScrollView horizontal bounces={false} style={{ marginTop: -15 }}>
