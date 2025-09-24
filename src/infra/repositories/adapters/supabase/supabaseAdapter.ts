@@ -6,7 +6,11 @@ import { Database } from "./types";
 
 export const storageURL = process.env.EXPO_PUBLIC_SUPABASE_STORAGE_URL;
 
-type CityWithFullInfo = Database['public']['Views']['cities_with_full_info']['Row']
+type CityWithFullInfo = Database['public']['Views']['cities_with_full_info']['Row'] & {
+  favorite_cities:{
+    user_id: string
+  }[]
+}
 
 function toCity(data: CityWithFullInfo ):City {
   const categories = data.categories as CategoryRow[]
@@ -23,6 +27,7 @@ function toCity(data: CityWithFullInfo ):City {
     },
     categories:categories.map(toCategory),
     touristAttractions:touristAttractions.map(toTouristAttraction),
+    isFavorite: data.favorite_cities.length > 0
   }
 }
 
@@ -31,15 +36,19 @@ type CityPreviewRow = {
   cover_image: string | null;
   id: string | null;
   name: string | null;
+  favorite_cities?:{
+    user_id: string
+  }[]
 }
 
-function toCityPreview(data: CityPreviewRow): CityPreview {
+function toCityPreview(data: CityPreviewRow, isFavorite?: boolean): CityPreview {
   return {
-    id: data.id,
-    country: data.country,
-    name: data.name,
+    id: data.id as string,
+    country: data.country as string,
+    name: data.name as string,
     coverImage: `${storageURL}/${data.cover_image}`,
-  } as CityPreview
+    isFavorite: isFavorite ?? (data.favorite_cities && data.favorite_cities.length > 0) ?? false
+  } 
 }
 
 type CategoryRow = Database['public']['Tables']['categories']['Row']

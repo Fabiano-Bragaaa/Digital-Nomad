@@ -29,8 +29,17 @@ export function CityCard({ cityPreview, style }: CityCardProps) {
           imageStyle={{ borderRadius: borderRadii.default }}>
           <BlackOpacity />
           <Box flex={1} padding="s24" justifyContent="space-between">
-            <TouchableOpacityBox alignSelf="flex-end" onPress={() => toggleFavorite({ cityId: cityPreview.id, isFavorite: false })}>
-              <Icon name="Favorite-outline" />
+            <TouchableOpacityBox
+              alignSelf="flex-end"
+              onPress={() =>
+                toggleFavorite({ cityId: cityPreview.id, isFavorite: false })
+              }>
+              <Icon
+                name={
+                  cityPreview.isFavorite ? "Favorite-fill" : "Favorite-outline"
+                }
+                color={cityPreview.isFavorite ? "primary" : "text"}
+              />
             </TouchableOpacityBox>
             <Box>
               <Text variant="title22">{cityPreview.name}</Text>
