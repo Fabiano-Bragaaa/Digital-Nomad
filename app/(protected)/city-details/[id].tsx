@@ -11,18 +11,28 @@ import { CityDetailsRelatedCities } from "@/src/ui/containers/CityDetailsRelated
 import { CityDetailsTouristAttraction } from "@/src/ui/containers/CityDetailsTouristAttraction";
 import { useLocalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
+import Animated, { FadeIn, useSharedValue } from "react-native-reanimated";
+
+const PAGE_ANIMATION_TIME = 1000
 
 export default function CityDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: city } = useCityById(id);
+  const { data: city, isLoading, error} = useCityById(id);
   const bottomSheetIsOpen = useSharedValue(false);
 
   function toggleBottomSheet() {
     bottomSheetIsOpen.value = !bottomSheetIsOpen.value;
   }
 
-  if (!city) {
+  if (isLoading) {
+    return (
+      <Box flex={1} justifyContent="center" alignItems="center">
+        <Text>Loading...</Text>
+      </Box>
+    );
+  }
+
+  if (error || !city) {
     return (
       <Box flex={1} justifyContent="center" alignItems="center">
         <Text>City not found</Text>
@@ -33,6 +43,7 @@ export default function CityDetailsScreen() {
   return (
     <>
       <Screen style={{ paddingHorizontal: 0 }} scrollable>
+        <Animated.View entering={FadeIn.duration(PAGE_ANIMATION_TIME)}>
         <CityDetailsHeader
           id={city.id}
           coverImage={city.coverImage}
@@ -57,12 +68,15 @@ export default function CityDetailsScreen() {
         <Divider paddingHorizontal="padding" />
 
         <CityDetailsRelatedCities id={city.id} />
+        </Animated.View>
       </Screen>
+      <Animated.View entering={FadeIn.duration(0).delay(PAGE_ANIMATION_TIME)}>
       <BottomSheetMap
         location={city.location}
         onPress={toggleBottomSheet}
         isOpen={bottomSheetIsOpen}
       />
+      </Animated.View>
     </>
   );
 }
